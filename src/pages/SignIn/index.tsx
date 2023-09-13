@@ -1,9 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 
 import * as Animatable from 'react-native-animatable'
 
 export default function SingIn() {
+    const [login, setLogin] = useState('')
+    const [senha, setSenha] = useState('')
+    const [errorLogin, setErrorLogin] = useState(null)
+    const [errorSenha, setErrorSenha] = useState(null)
+
+    function validarInputLogin(text: string) {
+        setLogin(text)
+        exibeErrorLogin(text)
+    }
+
+    function validarInputSenha(text: string) {
+        setSenha(text)
+        exibeErrorSenha(text)
+    }
+
+    function exibeErrorLogin(text: string) {
+        if(text === '')
+            setErrorLogin('Preencha o campo de login')
+        else
+            setErrorLogin(null)
+    }
+
+    function exibeErrorSenha(text: string) {
+        if(text === '')
+            setErrorSenha('Preencha o campo de senha')
+        else
+            setErrorSenha(null)
+    }
+
+    function validarInputs() {
+        exibeErrorLogin(login)
+        exibeErrorSenha(senha)
+
+        return (login !== '' && senha !== '')
+    }
+
     return (
         <View style={styles.container}>
             <Animatable.View animation="fadeInLeft" delay={500} style={styles.containerHeader}>
@@ -15,15 +51,25 @@ export default function SingIn() {
                 <TextInput
                     placeholder="Digite o seu login..."
                     style={styles.input}
+                    value={login}
+                    onChangeText={validarInputLogin}
                 />
+                <Text style={styles.errorMessage}>{errorLogin}</Text>
 
                 <Text style={styles.title}>Senha</Text>
                 <TextInput
                     placeholder="Digite a sua senha..."
+                    secureTextEntry
                     style={styles.input}
+                    value={senha}
+                    onChangeText={validarInputSenha}
                 />
+                <Text style={styles.errorMessage}>{errorSenha}</Text>
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={ () => {
+                if(validarInputs())
+                    console.log(`Criação função para validar login`)
+                }}>
                     <Text style={styles.buttonText}>Acessar</Text>
                 </TouchableOpacity>
 
@@ -60,13 +106,16 @@ const styles = StyleSheet.create({
     },
     title:{
         fontSize: 20,
-        marginTop: 28,
+        marginTop: 10,
+    },
+    errorMessage: {
+      color: 'red',
+      fontSize: 14
     },
     input:{
         borderBottomWidth: 1,
         height: 40,
-        marginBottom: 12,
-        fontSize: 16,
+        fontSize: 16
     },
     button: {
         backgroundColor: '#1E90FF',
