@@ -3,11 +3,14 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-nativ
 
 import * as Animatable from 'react-native-animatable'
 
+import { useNavigation } from '@react-navigation/native'
+
 export default function SingIn() {
     const [login, setLogin] = useState('')
     const [senha, setSenha] = useState('')
     const [errorLogin, setErrorLogin] = useState(null)
     const [errorSenha, setErrorSenha] = useState(null)
+    const navigation = useNavigation()
 
     function validarInputLogin(text: string) {
         setLogin(text)
@@ -68,7 +71,7 @@ export default function SingIn() {
 
                 <TouchableOpacity style={styles.button} onPress={ () => {
                 if(validarInputs())
-                    console.log(`Criação função para validar login`)
+                    navigation.navigate('Home')
                 }}>
                     <Text style={styles.buttonText}>Acessar</Text>
                 </TouchableOpacity>
